@@ -94,7 +94,7 @@ token:
 # MyBatis配置
 mybatis:
     # 搜索指定包别名
-    typeAliasesPackage: com.ruoyi.**.domain
+    typeAliasesPackage: com.ruoyi.**.domain,com.news.**.domain
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
@@ -121,3 +121,15 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+# minio 连接参数
+minio:
+  # 服务地址
+  endpoint: http://127.0.0.1:9000
+  # 文件地址
+  fileHost: http://127.0.0.1:9000
+  # 存储桶名称
+  bucket: zzx
+  # 用户名
+  access-key: minioadmin
+  # 密码
+  secret-key: minioadmin
