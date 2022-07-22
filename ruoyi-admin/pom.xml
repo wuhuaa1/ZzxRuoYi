@@ -61,6 +61,18 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- 新闻模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-news</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
