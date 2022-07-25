@@ -128,3 +128,17 @@ minio:
   accessKey: minioadmin
   secretKey: minioadmin
   bucketName: zzx
+#rabbitmq
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: guest
+  password: guest
+  #并发量的配置
+  #并发消费者的初始化值
+  listener:
+    concurrency: 10
+    #并发消费者的最大值
+    max-concurrency: 20
+    #每个消费者每次监听时可拉取处理的消息数量
+    prefetch: 5
