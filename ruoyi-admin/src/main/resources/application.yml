@@ -124,13 +124,7 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 # minio 连接参数
 minio:
-  # 服务地址
   endpoint: http://127.0.0.1:9000
-  # 文件地址
-  fileHost: http://127.0.0.1:9000
-  # 存储桶名称
-  bucket: zzx
-  # 用户名
-  access-key: minioadmin
-  # 密码
-  secret-key: minioadmin
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: zzx
