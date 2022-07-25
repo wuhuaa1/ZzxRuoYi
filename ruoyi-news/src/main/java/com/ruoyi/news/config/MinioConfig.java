@@ -1,5 +1,6 @@
 package com.ruoyi.news.config;
 import com.ruoyi.news.util.MinioUtils02;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Slf4j
+@Data
 public class MinioConfig {
  
   @Value("${minio.endpoint}")

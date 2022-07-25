@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
@@ -46,7 +47,11 @@ import java.util.Optional;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author: zrs
@@ -315,6 +320,21 @@ public class MinioUtils02 {
     }
 
     /**
+     * 列出存储桶中的所有对象
+     *
+     * @param bucketName 存储桶名称
+     * @return
+     */
+    @SneakyThrows
+    public Iterable<Result<Item>> listObjects(String bucketName) {
+        boolean flag = bucketExists(bucketName);
+        if (flag) {
+            return minioClient.listObjects(bucketName);
+        }
+        return null;
+    }
+
+    /**
      * 通过MultipartFile，上传文件
      *
      * @param bucketName 存储桶
@@ -388,7 +408,22 @@ public class MinioUtils02 {
         return minioClient
                 .statObject(StatObjectArgs.builder().bucket(bucketName).object(objectName).build());
     }
-
+    /**
+     * 文件访问路径
+     *
+     * @param bucketName 存储桶名称
+     * @param objectName 存储桶里的对象名称
+     * @return
+     */
+    @SneakyThrows
+    public String getObjectUrl(String bucketName, String objectName) {
+        boolean flag = bucketExists(bucketName);
+        String url = "";
+        if (flag) {
+            url = minioClient.getObjectUrl(bucketName, objectName);
+        }
+        return url;
+    }
     /**
      * 拷贝文件
      *
@@ -493,4 +528,59 @@ public class MinioUtils02 {
         return URLDecoder.decode(url, "UTF-8");
     }
 
+
+    /**
+     * 列出存储桶中的所有对象名称
+     *
+     * @param bucketName 存储桶名称
+     * @return
+     */
+    @SneakyThrows
+    public List<String> listObjectNames(String bucketName) {
+        List<String> listObjectNames = new ArrayList<>();
+        boolean flag = bucketExists(bucketName);
+        if (flag) {
+            Iterable<Result<Item>> myObjects = listObjects(bucketName);
+            for (Result<Item> result : myObjects) {
+                Item item = result.get();
+                listObjectNames.add(item.objectName());
+            }
+        }
+        return listObjectNames;
+    }
+
+    /**
+     * 文件下载
+     * @param bucketName
+     * @param fileName
+     * @param originalName
+     * @param response
+     */
+
+    public void downloadFile(String bucketName, String fileName, String originalName, HttpServletResponse response) {
+        try {
+
+            InputStream file = minioClient.getObject(bucketName, fileName);
+            String filename = new String(fileName.getBytes("ISO8859-1"), StandardCharsets.UTF_8);
+            if (StringUtils.isNotEmpty(originalName)) {
+                fileName = originalName;
+            }
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            ServletOutputStream servletOutputStream = response.getOutputStream();
+            int len;
+            byte[] buffer = new byte[1024];
+            while ((len = file.read(buffer)) > 0) {
+                servletOutputStream.write(buffer, 0, len);
+            }
+            servletOutputStream.flush();
+            file.close();
+            servletOutputStream.close();
+        } catch (ErrorResponseException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+}
 }
