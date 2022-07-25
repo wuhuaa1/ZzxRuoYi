@@ -553,18 +553,15 @@ public class MinioUtils02 {
      * 文件下载
      * @param bucketName
      * @param fileName
-     * @param originalName
      * @param response
      */
 
-    public void downloadFile(String bucketName, String fileName, String originalName, HttpServletResponse response) {
+    public void downloadFile(String bucketName, String fileName, HttpServletResponse response) {
         try {
+
 
             InputStream file = minioClient.getObject(bucketName, fileName);
             String filename = new String(fileName.getBytes("ISO8859-1"), StandardCharsets.UTF_8);
-            if (StringUtils.isNotEmpty(originalName)) {
-                fileName = originalName;
-            }
             response.setHeader("Content-Disposition", "attachment;filename=" + filename);
             ServletOutputStream servletOutputStream = response.getOutputStream();
             int len;

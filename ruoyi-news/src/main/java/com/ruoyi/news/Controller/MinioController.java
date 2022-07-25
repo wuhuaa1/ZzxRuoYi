@@ -4,6 +4,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.news.Dto.ResUploadDto;
 import com.ruoyi.news.config.MinioConfig;
 import com.ruoyi.news.util.MinioUtils02;
+import io.minio.MinioClient;
+import io.minio.Time;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +30,8 @@ public class MinioController {
     private MinioUtils02 minioUtils02;
     @Value("${minio.bucketName}")
     private String bucketName;
-
+    @Autowired
+    private static MinioClient minioClient;
 
     @ApiOperation(value = "zzx文件上传",tags = "zzx文件上传")
     @PostMapping("/upload")
@@ -72,14 +76,17 @@ public class MinioController {
 
     @ApiOperation(value = "zzx文件下载",tags = "通过文件名下载")
     @GetMapping("/download")
-    public AjaxResult download(@ApiParam(value = "文件名") String fileName,HttpServletResponse response) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        // 文件存储的目录结构
-        String objectName = sdf.format(new Date()) + "/" + fileName;
+    public AjaxResult download(@ApiParam(value = "文件名") String fileName, @ApiParam(value = "时间") String time, HttpServletResponse response) {
+       // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       // sdf.format(time);
+        if(time==null||time=="")
+        {
+            return  AjaxResult.error("时间不能为空");
+        }
+        fileName=time+"/"+fileName;
         //执行文件下载
-        minioUtils02.downloadFile(bucketName,fileName,objectName,response);
-        return  AjaxResult.success();
+        minioUtils02.downloadFile(bucketName,fileName,response);
+        return  AjaxResult.success(fileName);
 
     }
 
