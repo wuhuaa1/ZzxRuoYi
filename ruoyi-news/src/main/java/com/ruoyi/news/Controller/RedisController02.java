@@ -32,7 +32,7 @@ public class RedisController02 {
      * @return
      */
     @PostMapping("/add")
-    @ApiOperation(value = "添加redis数据带时间",notes = "添加redis数据带时间")
+    @ApiOperation(value = "添加redis数据带时间")
     public AjaxResult add(String value)
     {
         //获取当前时间
@@ -53,7 +53,7 @@ public class RedisController02 {
      * @return
      */
     @GetMapping("/add2")
-    @ApiOperation(value = "添加redis2",notes = "添加redis2")
+    @ApiOperation(value = "添加redis2")
     public AjaxResult add2( String key)
     {
         redisTemplate.opsForValue().set("addRedis"+key,key,3, TimeUnit.MINUTES);

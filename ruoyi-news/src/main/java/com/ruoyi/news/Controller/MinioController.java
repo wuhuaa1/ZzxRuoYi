@@ -33,7 +33,7 @@ public class MinioController {
     @Autowired
     private static MinioClient minioClient;
 
-    @ApiOperation(value = "zzx文件上传",tags = "zzx文件上传")
+    @ApiOperation(value = "zzx文件上传")
     @PostMapping("/upload")
     public AjaxResult upload(@ApiParam(value = "文件") MultipartFile file) {
         try {
@@ -58,7 +58,7 @@ public class MinioController {
 
 
 
-    @ApiOperation(value="zzx获取所有文件列表",tags = "zzx获取所有文件列表")
+    @ApiOperation(value="zzx获取所有文件列表")
     @GetMapping("/listFile")
     public  AjaxResult ListFile(@ApiParam(value = "桶名称") String bucketName)
     {
@@ -74,7 +74,7 @@ public class MinioController {
         }
     }
 
-    @ApiOperation(value = "zzx文件下载",tags = "通过文件名下载")
+    @ApiOperation(value = "zzx文件下载")
     @GetMapping("/download")
     public AjaxResult download(@ApiParam(value = "文件名") String fileName, @ApiParam(value = "时间") String time, HttpServletResponse response) {
        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,7 +90,7 @@ public class MinioController {
 
     }
 
-    @ApiOperation(value="zzx文件删除",notes = "zzx文件删除")
+    @ApiOperation(value="zzx文件删除")
     @DeleteMapping("/delete")
     public AjaxResult deleteFiles(@RequestParam("time") String time, @RequestParam("filename") String filename) {
 

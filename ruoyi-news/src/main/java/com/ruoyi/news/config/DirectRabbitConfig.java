@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @Author : zzx
  * @CreateTime :
- * @Description :
+ * @Description : 直连交换机配置类
  **/
 @Configuration
 public class DirectRabbitConfig {
