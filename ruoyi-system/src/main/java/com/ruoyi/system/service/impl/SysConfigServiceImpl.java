@@ -3,7 +3,11 @@ package com.ruoyi.system.service.impl;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataSource;
 import com.ruoyi.common.constant.CacheConstants;
@@ -25,11 +29,15 @@ import com.ruoyi.system.service.ISysConfigService;
 @Service
 public class SysConfigServiceImpl implements ISysConfigService
 {
+    private  static Logger logger = LoggerFactory.getLogger(SysConfigServiceImpl.class);
     @Autowired
     private SysConfigMapper configMapper;
 
     @Autowired
     private RedisCache redisCache;
+
+    @Value("${EnvironmentName}")
+    private  String  EnvironmentName;
 
     /**
      * 项目启动时，初始化参数到缓存
@@ -37,6 +45,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     @PostConstruct
     public void init()
     {
+        logger.info("项目初始化启动啦-----------------现在运行的环境是"+EnvironmentName+"//哟----------------------");
         loadingConfigCache();
     }
 
