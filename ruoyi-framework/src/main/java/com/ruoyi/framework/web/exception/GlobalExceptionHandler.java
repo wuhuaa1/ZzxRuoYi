@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -111,4 +112,19 @@ public class GlobalExceptionHandler
     {
         return AjaxResult.error("演示模式，不允许操作");
     }
+
+    /**
+     * zzx 拦截业务异常，返回业务异常信息
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BusinessErrorException.class)
+  //@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public AjaxResult handleBusinessError(BusinessErrorException e) {
+        log.error(e.getMessage(),e);
+        String message=e.getMessage();
+        int code=e.getCode();
+        return AjaxResult.error(code,message);
+    }
+
 }

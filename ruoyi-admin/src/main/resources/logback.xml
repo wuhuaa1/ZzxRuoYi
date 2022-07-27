@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 日志存放路径 -->
-	<property name="log.path" value="/home/ruoyi/logs" />
+	<property name="log.path" value="/home/ZzxRuoyi/logs"/>
     <!-- 日志输出格式 -->
 	<property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
 
@@ -15,16 +15,25 @@
 	<!-- 系统日志输出 -->
 	<appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
 	    <file>${log.path}/sys-info.log</file>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <!-- 循环政策：基于时间创建日志文件 -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-			<fileNamePattern>${log.path}/sys-info.%d{yyyy-MM-dd}.log</fileNamePattern>
-			<!-- 日志最大的历史 60天 -->
-			<maxHistory>60</maxHistory>
+			<fileNamePattern>${log.path}/sys-info.%d{yyyy-MM-dd}.log.%i</fileNamePattern>
+<!--            配置日志文件不能超过10M，若超过10M，日志文件会以索引0开始，命名日志文件-->
+<!--            例如error.20180823.0.txt-->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+			<!-- 日志最大的历史 7天 -->
+			<maxHistory>7</maxHistory>
 		</rollingPolicy>
+        <!--日志文档输出格式-->
 		<encoder>
 			<pattern>${log.pattern}</pattern>
 		</encoder>
+        <!-- 过滤的级别 -->
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 过滤的级别 -->
             <level>INFO</level>
@@ -40,9 +49,15 @@
         <!-- 循环政策：基于时间创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/sys-error.%d{yyyy-MM-dd}.log</fileNamePattern>
-			<!-- 日志最大的历史 60天 -->
-			<maxHistory>60</maxHistory>
+            <fileNamePattern>${log.path}/sys-error.%d{yyyy-MM-dd}.log.%i</fileNamePattern>
+			<!-- 日志最大的历史 7天 -->
+			<maxHistory>7</maxHistory>
+            <!--            配置日志文件不能超过10M，若超过10M，日志文件会以索引0开始，命名日志文件-->
+            <!--            例如error.20180823.0.txt-->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
@@ -64,7 +79,7 @@
             <!-- 按天回滚 daily -->
             <fileNamePattern>${log.path}/sys-user.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
-            <maxHistory>60</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
