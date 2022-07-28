@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.news.mapper.ZzxNewsMapper">
+
+    <resultMap type="ZzxNews" id="ZzxNewsResult">
+        <result property="newsId"    column="news_id"    />
+        <result property="newsName"    column="news_name"    />
+        <result property="newsAuthor"    column="news_author"    />
+        <result property="newsContent"    column="news_content"    />
+        <result property="newsCreatetime"    column="news_createtime"    />
+        <result property="newsUpdatetime"    column="news_updatetime"    />
+        <result property="newsSum"    column="news_sum"    />
+    </resultMap>
+
+    <sql id="selectZzxNewsVo">
+        select news_id, news_name, news_author, news_content, news_createtime, news_updatetime, news_sum from zzx_news
+    </sql>
+
+    <select id="selectZzxNewsList" parameterType="ZzxNews" resultMap="ZzxNewsResult">
+        <include refid="selectZzxNewsVo"/>
+        <where>  
+            <if test="newsName != null  and newsName != ''"> and news_name like concat('%', #{newsName}, '%')</if>
+            <if test="newsAuthor != null  and newsAuthor != ''"> and news_author = #{newsAuthor}</if>
+            <if test="newsContent != null  and newsContent != ''"> and news_content = #{newsContent}</if>
+            <if test="newsCreatetime != null "> and news_createtime = #{newsCreatetime}</if>
+            <if test="newsUpdatetime != null "> and news_updatetime = #{newsUpdatetime}</if>
+            <if test="newsSum != null "> and news_sum = #{newsSum}</if>
+        </where>
+    </select>
+    
+    <select id="selectZzxNewsByNewsId" parameterType="Long" resultMap="ZzxNewsResult">
+        <include refid="selectZzxNewsVo"/>
+        where news_id = #{newsId}
+    </select>
+        
+    <insert id="insertZzxNews" parameterType="ZzxNews" useGeneratedKeys="true" keyProperty="newsId">
+        insert into zzx_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="newsName != null">news_name,</if>
+            <if test="newsAuthor != null">news_author,</if>
+            <if test="newsContent != null">news_content,</if>
+            <if test="newsCreatetime != null">news_createtime,</if>
+            <if test="newsUpdatetime != null">news_updatetime,</if>
+            <if test="newsSum != null">news_sum,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="newsName != null">#{newsName},</if>
+            <if test="newsAuthor != null">#{newsAuthor},</if>
+            <if test="newsContent != null">#{newsContent},</if>
+            <if test="newsCreatetime != null">#{newsCreatetime},</if>
+            <if test="newsUpdatetime != null">#{newsUpdatetime},</if>
+            <if test="newsSum != null">#{newsSum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZzxNews" parameterType="ZzxNews">
+        update zzx_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newsName != null">news_name = #{newsName},</if>
+            <if test="newsAuthor != null">news_author = #{newsAuthor},</if>
+            <if test="newsContent != null">news_content = #{newsContent},</if>
+            <if test="newsCreatetime != null">news_createtime = #{newsCreatetime},</if>
+            <if test="newsUpdatetime != null">news_updatetime = #{newsUpdatetime},</if>
+            <if test="newsSum != null">news_sum = #{newsSum},</if>
+        </trim>
+        where news_id = #{newsId}
+    </update>
+
+    <delete id="deleteZzxNewsByNewsId" parameterType="Long">
+        delete from zzx_news where news_id = #{newsId}
+    </delete>
+
+    <delete id="deleteZzxNewsByNewsIds" parameterType="String">
+        delete from zzx_news where news_id in 
+        <foreach item="newsId" collection="array" open="(" separator="," close=")">
+            #{newsId}
+        </foreach>
+    </delete>
+</mapper>

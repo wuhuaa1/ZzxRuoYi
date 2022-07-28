@@ -3,23 +3,30 @@ package com.ruoyi.common.core.domain;
 import java.util.HashMap;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.utils.StringUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 操作消息提醒
  * 
  * @author ruoyi
  */
+@ApiModel("操作提醒")
 public class AjaxResult extends HashMap<String, Object>
 {
     private static final long serialVersionUID = 1L;
 
     /** 状态码 */
+    @ApiModelProperty(value = "状态码")
     public static final String CODE_TAG = "code";
 
     /** 返回内容 */
+    @ApiModelProperty(value = "返回内容")
     public static final String MSG_TAG = "msg";
 
     /** 数据对象 */
+    @ApiModelProperty(value = "数据对象")
     public static final String DATA_TAG = "data";
 
     /**
